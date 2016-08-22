@@ -24,7 +24,8 @@ angular.module('app', [])
 
         $scope.addTransaction = function() {
             console.log($scope.value, $scope.description, $scope.category);
-            if (parseFloat($scope.value) != undefined && $scope.description != undefined && $scope.category != undefined) {
+            if (parseFloat($scope.value) != undefined && $scope.description != undefined &&
+                                                                $scope.category != undefined) {
                 var value = $scope.money, action = $scope.action, category = $scope.category,
                     description = $scope.description, time = new Date();
 
@@ -62,4 +63,25 @@ angular.module('app', [])
             return /^\s*$/.test(str);
         }
 
+        $scope.categories = [
+                "Еда и напитки",
+                "Мобильная связь",
+                "Транспорт",
+                "Интернет",
+                "Медицина",
+                "Работа",
+                "Квартира",
+                "Магазины",
+                "Спорт",
+                "Подарки",
+                "Одежда",
+                "Рестораны и кафе",
+                "Путешествия",
+                "Другое",
+        ]
+
+        $scope.deleteTransaction = function (index) {
+            $scope.transactions.splice(index, 1);
+            $scope.balance = updateBalance();
+        }
     });

@@ -26,10 +26,13 @@ body {
     background-color: #ebebeb;
 }
 h1 {
-    font-size: 24px;
+    font-size: 30px;
+    margin-top: 15px;
+    margin-bottom: 30px;
 }
 h2 {
     font-size: 22px;
+    margin-bottom: 15px;
 }
 input[type="text"], select, button {
     font-family: 'Open Sans', sans-serif;
@@ -89,6 +92,7 @@ input[type="text"] {
     /*background-color: #3e4156; */
     color: #fff;
     margin: 0;
+    width: 100%;
 }
 
 .select-style select {
@@ -131,9 +135,6 @@ ol, ul {list-style: none;}
 }
 
 a, a:hover {text-decoration: none;}
-h1, h2 {
-    margin-bottom: 10px;
-}
 
 .clearfix:before,
 .clearfix:after {
@@ -204,7 +205,6 @@ header, .btn {
 }
 
 @media (max-width: 768px) {
-    h1 {margin-top: 5px;}
     body {padding-top: 60px}
     header {
         position: fixed;
@@ -367,12 +367,19 @@ input[type="text"]:focus, .select-style:focus {
     color: #c90000;
 }
 
-.transactions {
-    padding: 10px 0px;
-}
-
 .wrap {
     border-bottom: 1px solid #ccc;
+    padding-top: 2px;
+    padding-bottom: 25px;
+}
+
+.cross {
+    font-size: 17px;
+}
+
+.cross a {
+    text-underline: none;
+    color: #000;
 }
 
 
