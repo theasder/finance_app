@@ -1,0 +1,59 @@
+{% extends "personal_finance/base.html" %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h1>Ваш баланс: {{ balance }} ₽</h1>
+        <h2>Добавить транзакцию</h2>
+        <form class="form-inline" method="post" action="/add/">
+            {% csrf_token %}
+            <div class="row">
+                <div class="form-group col-md-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="money" name="money" placeholder="Сколько денег?">
+                        <div class="input-group-addon">₽</div>
+                    </div>
+                </div>
+                <select class="form-control col-md-2" id="action" name="action">
+                    <div class="input-group">
+                        <option value="received">получено</option>
+                        <option value="spent" selected>потрачено</option>
+                    </div>
+                </select>
+                <select class="form-control col-md-2" id="action" name="category">
+                    <div class="input-group">
+                        <option value="default" selected>--Выберете категорию--</option>
+                        {% for category in categories %}
+                            <option value={{ category.screenname }}>{{ category.name }}</option>
+                        {% endfor %}
+                    </div>
+                </select>
+                <div class="form-group col-md-6">
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Почему?" style="width: 100%">
+                </div>
+                <button type="submit" class="btn btn-primary col-md-1" id="add-transaction">Готово!</button>
+            </div>
+        </form>
+        {% if transactions %}
+            <br>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    {% for transaction in transactions %}
+                        <tr>
+                            <td>{{ transaction.value }} ₽</td>
+                            <td>{{ transaction.description }}</td>
+                            <td>{{ transaction.category }}</td>
+                            <td>{{ transaction.pub_date }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <br>
+            <p class="lead">Транзакций нет, но вы держитесь! Всего доброго, здоровья, хорошего настроения.</p>
+        {% endif %}
+    {% else %}
+        <h1>Thrifty &mdash; ваш личный бухгалтер.</h1>
+        <p class="lead">Ведите свой счет. Отслеживайте свои расходы. Становитесь богаче.</p>
+        <p><a href="{% url 'account_login' %}">Войдите</a> или <a href="{% url 'account_signup' %}">зарегистрируйтесь прямо сейчас</a> абсолютно бесплатно!</p>
+    {% endif %}
+{% endblock %}

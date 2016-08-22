@@ -6,7 +6,7 @@ angular.module('app', [])
         };
 
         $scope.transactions = [
-            createTransaction(5000.00, "2016-07-31T20:22:26Z", "Работа", "Реклама на паблике"),
+            createTransaction(5000.00, "2016-07-31T20:22:26Z", "Работа", "Выполнил заказ на фрилансе"),
             createTransaction(-35.00, "2016-07-31T20:24:02Z", "Транспорт", "Проезд на маршрутке")
         ].sort($scope.compareOpersByDate);
 
@@ -36,6 +36,9 @@ angular.module('app', [])
                 var newTransaction = createTransaction(value, time, category, description);
                 $scope.transactions.unshift(newTransaction);
                 $scope.balance = updateBalance();
+                $scope.money = "";
+                $scope.category = "";
+                $scope.description = "";
             }
         };
 

@@ -258,16 +258,57 @@ input[type="text"]:focus, .select-style:focus {
     margin-left: -5px;
     margin-right: -5px;
 }
-.col-md-0, .col-md-1, .col-md-2, .col-lg-2, .col-md-3, .col-md-4, .col-md-5 {
+.col-md-0, .col-md-1, .col-md-2, .col-lg-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7 {
     position: relative;
     min-height: 1px;
     padding-left: 5px;
     padding-right: 5px;
 }
+.col-md-6 {
+    float: left;
+    text-align: center;
+    padding: 0;
+}
+
+.col-md-6 a {
+    padding: 15px 0;
+    color: #000;
+}
+
+.active_filter {
+    border-bottom: 3px solid #19153e;
+}
+
+.filter {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    /*height: 39px;*/
+    line-height: 50px;
+    padding-left: 15px;
+}
+
+@media (max-width: 768px) {
+    .col-md-6 {
+        width: 33.33333%;
+    }
+}
+
+@media (max-width: 992px) and (min-width: 768px) {
+    .col-md-6 {
+        margin-right: 40px;
+    }
+}
 
 @media (min-width: 992px) {
-    .col-md-0, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5 {
+    .col-md-0, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7 {
         float: left;
+    }
+    .col-md-7 {
+        width: 73%;
+    }
+    .col-md-6 {
+        margin-right: 40px;
     }
     .col-md-5 {
         width: 60.33333333%;

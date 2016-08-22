@@ -1,0 +1,126 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <title>{% block title %}Thrifty – учет ваших личных финансов{% endblock %}</title>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar">
+						</span>
+						<span class="icon-bar">
+						</span>
+						<span class="icon-bar">
+						</span>
+					</button>
+					<a class="navbar-brand" href="/">thrifty</a>
+				</div>
+				<div class="collapse navbar-collapse" id="navbar-ex-collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="active">
+							<a href="/">Главная<br>
+							</a>
+						</li>
+                        {% if user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'account_email' %}">Вошли как {{ user.username }}</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'account_logout' %}">Выйти</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'account_login' %}">Войти</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'account_signup' %}">Зарегистрироваться</a>
+                            </li>
+                        {% endif %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="section">
+            <div class="container" id="content">
+                {% block content %}{% endblock %}
+            </div>
+		</div>
+
+		<footer class="section">
+            {% block footer %}
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6">
+						<h1>
+						</h1>
+						<p>Thrifty, inc. 2016 ©</p>
+					</div>
+					<div class="col-sm-6">
+						<div class="row">
+							<div class="col-md-12 hidden-lg hidden-md hidden-sm text-left">
+								<a href="#">
+									<i class="fa fa-3x fa-fw fa-instagram text-inverse">
+									</i>
+								</a>
+								<a href="#">
+									<i class="fa fa-3x fa-fw fa-twitter text-inverse">
+									</i>
+								</a>
+								<a href="#">
+									<i class="fa fa-3x fa-fw fa-facebook text-inverse">
+									</i>
+								</a>
+								<a href="#">
+									<i class="fa fa-3x fa-fw fa-github text-inverse">
+									</i>
+								</a>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 hidden-xs text-right">
+								<a href="#">
+									<i class="fa fa-2x fa-fw fa-twitter text-primary">
+									</i>
+								</a>
+								<a href="#">
+									<i class="fa fa-2x fa-facebook fa-fw text-primary">
+									</i>
+								</a>
+								<a href="#">
+									<i class="fa fa-2x fa-fw fa-github text-primary">
+									</i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+            {% endblock %}
+		</footer>
+        <script type="text/javascript">
+            $(document).on('submit', '#add-transaction', function(e){
+                 $.ajax({
+                    type: 'POST',
+                    url: '/add/',
+                    data: $(this).serialize(),
+                    success: function(data){
+                        $("#content").load(location.href + " #content");
+                    }
+                });
+                e.preventDefault();
+                return false;
+            });
+        </script>
+</body>
+</html>
