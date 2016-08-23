@@ -47,7 +47,7 @@
     <section>
         <div class="container clearfix">
             <div id="content">
-                <h1>Ваш баланс: {{ balance }} ₽</h1>
+                <h1>{{ label }}: {{ balance }} руб.</h1>
                 <h2>Добавить транзакцию</h2>
                 <form method="post">
                     <div class="row">
@@ -57,7 +57,7 @@
                         </div>
                         <div class="col-md-1">
                             <div class="select-style">
-                                <select id="action" name="action" ng-model="action">
+                                <select id="action" name="action" ng-model="action" ng-change="changeCategories()">
                                     <option value="received">получено</option>
                                     <option value="spent" selected>потрачено</option>
                                 </select>
@@ -84,19 +84,30 @@
                     </div>
                 </form>
 
+                <div class="row select-style" id="timeSelectMobile">
+                    <select ng-model="selectedTimeFilter"
+                            ng-options="filter.name for filter in timeFilters"
+                            ng-change="selectTimeFilter(selectedTimeFilter)">
+                    </select>
+                </div>
+
                 <div class="row filter">
-                    <div class="col-md-6">
-                        <a href="#" class="active_filter">Все транзакции</a>
+                    <div class="col-md-6" ng-repeat="filter in filters">
+                        <a href="#" ng-class="{activeFilter: filter===selectedFilter}"
+                                    ng-click="selectFilter(filter)"
+                                    ng-bind="filter.name"></a>
                     </div>
-                    <div class="col-md-6">
-                        <a href="#">Доходы</a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="#">Траты</a>
+                    <div class="col-md-7">
+                        <div class="select-style" id="timeSelect">
+                            <select id="timeFilter" ng-model="selectedTimeFilter"
+                                    ng-options="filter.name for filter in timeFilters"
+                                    ng-change="selectTimeFilter(selectedTimeFilter)">
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <div id="data" ng-repeat="transaction in transactions">
+                <div id="data" ng-repeat="transaction in getFilteredTransactions()">
                     <div class="wrap">
                         <div class="clearfix">
                             <div class="right cross">

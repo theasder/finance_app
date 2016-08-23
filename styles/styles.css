@@ -206,6 +206,11 @@ header, .btn {
 
 @media (max-width: 768px) {
     body {padding-top: 60px}
+    h1 {
+        font-size: 24px;
+        text-align: center;
+    }
+    h2 { font-size: 20px; }
     header {
         position: fixed;
         top: 0;
@@ -275,7 +280,7 @@ input[type="text"]:focus, .select-style:focus {
     color: #000;
 }
 
-.active_filter {
+.activeFilter {
     border-bottom: 3px solid #19153e;
 }
 
@@ -283,8 +288,8 @@ input[type="text"]:focus, .select-style:focus {
     margin-top: 20px;
     margin-bottom: 10px;
     border-bottom: 1px solid #ccc;
-    /*height: 39px;*/
-    line-height: 50px;
+    height: 39px;
+    /*line-height: 52px;*/
     padding-left: 15px;
 }
 
@@ -294,18 +299,13 @@ input[type="text"]:focus, .select-style:focus {
     }
 }
 
-@media (max-width: 992px) and (min-width: 768px) {
-    .col-md-6 {
-        margin-right: 40px;
-    }
-}
-
 @media (min-width: 992px) {
-    .col-md-0, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7 {
+    .col-md-0, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6 {
         float: left;
     }
     .col-md-7 {
-        width: 73%;
+        float: right;
+        width: 20%;
     }
     .col-md-6 {
         margin-right: 40px;
@@ -421,6 +421,37 @@ input[type="text"]:focus, .select-style:focus {
 .cross a {
     text-underline: none;
     color: #000;
+}
+
+#timeSelect {
+    margin-top: -7px;
+}
+
+#timeSelectMobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #timeSelectMobile {
+        margin-top: 10px;
+        display: block;
+    }
+    #timeSelect {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) and (min-width: 768px) {
+    .col-md-6 {
+        margin-right: 40px;
+    }
+    .col-md-7 {
+        float: right;
+        width: 25%;
+    }
+    .select-style {
+        background: #fff url("../img/arrowdown.gif") no-repeat 99% 50%;
+    }
 }
 
 
