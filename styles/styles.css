@@ -263,7 +263,8 @@ input[type="text"]:focus, .select-style:focus {
     margin-left: -5px;
     margin-right: -5px;
 }
-.col-md-0, .col-md-1, .col-md-2, .col-lg-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7 {
+.col-md-0, .col-md-1, .col-md-2, .col-lg-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7
+.col-md-8 {
     position: relative;
     min-height: 1px;
     padding-left: 5px;
@@ -285,7 +286,7 @@ input[type="text"]:focus, .select-style:focus {
 }
 
 .filter {
-    margin-top: 20px;
+    margin-top: 30px;
     margin-bottom: 10px;
     border-bottom: 1px solid #ccc;
     height: 39px;
@@ -295,12 +296,12 @@ input[type="text"]:focus, .select-style:focus {
 
 @media (max-width: 768px) {
     .col-md-6 {
-        width: 33.33333%;
+        width: 33%;
     }
 }
 
 @media (min-width: 992px) {
-    .col-md-0, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6 {
+    .col-md-0, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-8 {
         float: left;
     }
     .col-md-7 {
@@ -327,6 +328,11 @@ input[type="text"]:focus, .select-style:focus {
     }
     .col-md-0 {
         width: 10.33333%;
+    }
+    .col-md-8 {
+        width: 50%;
+        /*margin-left: 1%;*/
+        /*margin-right: 1%;*/
     }
 }
 
@@ -454,4 +460,12 @@ input[type="text"]:focus, .select-style:focus {
     }
 }
 
+.graphs {
+    margin-top: 30px;
+    display: none;
+}
+
+.selectedGraph {
+    display: block;
+}
 
