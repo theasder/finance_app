@@ -469,3 +469,7 @@ input[type="text"]:focus, .select-style:focus {
     display: block;
 }
 
+.none {
+    display: none;
+}
+

@@ -27,7 +27,7 @@ app.factory('transactions', function() {
     };
 
     var data = [
-        createTransaction(28400.00, "2016-08-24T20:22:26Z", "Работа", "Зарплата"),
+        createTransaction(28400.00, "2016-08-25T08:22:26Z", "Работа", "Зарплата"),
         createTransaction(-17000.00, "2016-08-23T20:22:26Z", "Квартира", "Аренда"),
         createTransaction(12040.00, "2016-08-22T20:22:26Z", "Еще одна работа", "Выполнил заказ на фрилансе"),
         createTransaction(-7000.00, "2016-08-21T20:22:26Z", "Кафе и рестораны", "День Рождения Ларисы Ивановны"),
@@ -38,11 +38,16 @@ app.factory('transactions', function() {
     ].sort(compareOpersByDate);
 
     function addTransaction(value, action, category, description) {
-        if (parseFloat(value) != undefined && description != undefined && category != undefined) {
+        console.log(value, category);
+        if (parseFloat(value) <= 0 && value != "" && category != undefined) {
             var time = new Date();
 
             if (action == 'spent') {
                 value = -value;
+            }
+
+            if (description == undefined) {
+                description = category;
             }
 
             var newTransaction = createTransaction(parseFloat(value), time, category, description);
@@ -76,12 +81,13 @@ app.factory('transactions', function() {
         return a + b;
     }
 
-    function categoriesData(categoryList, categoryValues, transactionData) {
-        var categoryValue;
+    function categoriesData(categoryList) {
+        var categoryValue, result = [];
 
         for (var i = 0; i < categoryList.length; i++) {
 
             categoryValue = data
+                .filter(timeFilter.method)
                 .filter(function (elem) {
                     return elem.category == categoryList[i];
                 })
@@ -90,9 +96,9 @@ app.factory('transactions', function() {
                 })
                 .reduce(add, 0);
 
-            categoryValues.push(categoryValue);
+            result.push(categoryValue);
         }
-
+        return result;
     }
 
     return {
@@ -196,12 +202,15 @@ app.controller('main', function ($scope, transactions, spendings, profits, filte
         $scope.selectedGraph = filter.name;
     };
 
+    $scope.transactionsData = transactions.data;
+
     $scope.getFilteredTransactions = function () {
         $scope.label = $scope.selectedFilter.label + " " + $scope.selectedTimeFilter.name.toLowerCase();
         $scope.balance = updateBalance();
-        return transactions.data
+        $scope.transactionsData = transactions.data
             .filter($scope.selectedTimeFilter.method)
             .filter($scope.selectedFilter.method);
+        return $scope.transactionsData;
     };
 
     function add(a, b) {
@@ -253,19 +262,24 @@ app.controller('main', function ($scope, transactions, spendings, profits, filte
 
 app.controller('spendCtrl', function($scope, spendings, transactions) {
     $scope.labels = spendings;
-    $scope.data = [];
-    transactions.categoriesData(spendings, $scope.data);
+    $scope.data = transactions.categoriesData(spendings);
 
+    $scope.$watchCollection('transactionsData', function() {
+        $scope.data = transactions.categoriesData(spendings);
+    });
 });
 
 app.controller('profitCtrl', function($scope, profits, transactions) {
     $scope.labels = profits;
-    $scope.data = [];
+    $scope.data = transactions.categoriesData(profits);
 
-    console.log(transactions.timeFilter.method);
-    transactions.categoriesData(profits, $scope.data, transactions.data
-            .filter(transactions.getTimeFilter().method));
+    $scope.$watchCollection('transactionsData', function() {
+        $scope.data = transactions.categoriesData(profits);
+    });
 });
+
+
+
 
 
 

@@ -123,11 +123,20 @@
                             </div>
                             <div class="right">
                                 <div class="descr" ng-bind="transaction.description"></div>
-                                <div class="cat" ng-bind="transaction.category"></div>
+                                <div class="cat" ng-bind="transaction.category"
+                                                 ng-class="{none: transaction.category === transaction.description}">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!--<div class="graphs row" ng-class="{selectedGraph: selectedGraph === 'Все'}"-->
+                     <!--ng-controller="allCtrl">-->
+                    <!--<canvas class="chart chart-doughnut"-->
+                            <!--chart-data="data" chart-labels="labels">-->
+                    <!--</canvas>-->
+                <!--</div>-->
 
                 <div class="graphs row" ng-class="{selectedGraph: selectedGraph === 'Траты'}"
                      ng-controller="spendCtrl">
