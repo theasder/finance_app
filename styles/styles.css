@@ -159,13 +159,18 @@ a, a:hover {text-decoration: none;}
     margin: 0 auto;
 }
 
-header {
+header, footer {
     position: relative;
     width: 100%;
 }
 
-header, .btn {
+header, .btn, footer {
     background: #19153e; /* #3e4156;*/
+}
+
+footer {
+    padding: 30px 20px;
+    color: #ffffff;
 }
 
 .logo {
@@ -304,6 +309,25 @@ input[type="text"]:focus, .select-style:focus {
     .col-md-6 {
         width: 33%;
     }
+}
+
+.col-md-9, .col-md-10 {
+    float: left;
+}
+
+.col-md-9 {
+    width: 25%;
+}
+
+.col-md-10 {
+    width: 50%;
+    text-align: center;
+    line-height: 33px;
+}
+
+#pagination {
+    margin: 30px auto 0 auto;
+    width: 300px;
 }
 
 @media (min-width: 992px) {
@@ -471,7 +495,7 @@ input[type="text"]:focus, .select-style:focus {
     display: none;
 }
 
-.selectedGraph {
+.selectedGraph, .menu-toggle {
     display: block;
 }
 
@@ -484,9 +508,7 @@ input[type="text"]:focus, .select-style:focus {
     margin-top: 30px;
 }
 
-@media (min-width: 760px) {
-    .nav {
-        display: block;
-    }
+.strike {
+    text-decoration: line-through;
 }
 

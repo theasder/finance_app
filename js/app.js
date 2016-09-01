@@ -1,12 +1,12 @@
 'use strict';
 var app = angular.module('app', ['chart.js']);
 
-// app.controller('MenuCtrl', function($scope) {
-//     $scope.custom = true;
-//     $scope.toggleMenu = function () {
-//         $scope.custom = $scope.custom === false ? true: false;
-//     }
-// });
+app.controller('MenuCtrl', function($scope) {
+    $scope.custom = false;
+    $scope.toggleMenu = function () {
+        $scope.custom = !$scope.custom;
+    };
+});
 
 app.factory('transactions', function($filter) {
     function createTransaction(value, time, category, description) {
@@ -86,10 +86,6 @@ app.factory('transactions', function($filter) {
         return a + b;
     }
 
-    function dateToDays(date) {
-        return date.split(".").map(function(elem) {return parseInt(elem);});
-    }
-
     function balanceChange() {
         var dataGroupByDates = data
             .filter(timeFilter.method)
@@ -104,10 +100,7 @@ app.factory('transactions', function($filter) {
                 return res;
             }, {__array:[]});
 
-        var labels = dataGroupByDates.__array.sort(function(a, b) {
-            var date1 = dateToDays(a), date2 = dateToDays(b);
-            return !(date1[2] <= date2[2] && date1[1] <= date2[1] && (date1[1] == date2[1] ? date1[0] <= date2[0] : true));
-        });
+        var labels = dataGroupByDates.__array.reverse();
 
         var values = [], i;
 
@@ -225,6 +218,13 @@ app.constant('profits', [
     "Другое"
 ]);
 
+app.filter('startFrom', function(){
+    return function(input, start){
+        start = +start;
+        return input.slice(start);
+    }
+});
+
 app.controller('main', function ($scope, transactions, spendings, profits, filters, timeFilters) {
 
     $scope.filters = filters;
@@ -234,6 +234,7 @@ app.controller('main', function ($scope, transactions, spendings, profits, filte
     $scope.selectedGraph = "Все";
 
     $scope.selectTimeFilter = function (filter) {
+        $scope.currentPage = 0;
         transactions.setTimeFilter(filter);
         $scope.selectedTimeFilter = filter;
     };
@@ -242,6 +243,8 @@ app.controller('main', function ($scope, transactions, spendings, profits, filte
     $scope.graphTitle = "Изменение вашего баланса";
 
     $scope.selectFilter = function (filter) {
+        $scope.currentPage = 0;
+
         switch (filter.name) {
             case "Все":
                 $scope.graphTitle = "Изменение вашего баланса";
@@ -313,7 +316,34 @@ app.controller('main', function ($scope, transactions, spendings, profits, filte
     $scope.deleteTransaction = function(index) {
         transactions.deleteTransaction(index);
         $scope.balance = updateBalance();
-    }
+    };
+
+    $scope.currentPage = 0;
+    $scope.itemsPerPage = 5;
+
+    $scope.firstPage = function() {
+        return $scope.currentPage == 0;
+    };
+
+    $scope.lastPage = function() {
+        var lastPageNum = Math.ceil($scope.transactionsData.length / $scope.itemsPerPage - 1);
+        return $scope.currentPage == lastPageNum || $scope.currentPage == lastPageNum + 1;
+    };
+
+    $scope.numberOfPages = function() {
+        return Math.ceil($scope.transactionsData.length / $scope.itemsPerPage);
+    };
+
+    $scope.startingItem = function() {
+        return $scope.currentPage * $scope.itemsPerPage;
+    };
+    $scope.pageBack = function() {
+        $scope.currentPage = $scope.currentPage - 1;
+    };
+
+    $scope.pageForward = function() {
+        $scope.currentPage = $scope.currentPage + 1;
+    };
 
 });
 
@@ -359,9 +389,3 @@ app.controller('profitCtrl', function($scope, profits, transactions) {
         $scope.data = transactions.categoriesData(profits);
     });
 });
-
-
-
-
-
-
