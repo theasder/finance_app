@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="styles/styles.css" type="text/css">
 	<title>Thrifty – учет ваших личных финансов</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" ></script>
+    <script src="js/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             var touch = $('#touch-menu');
@@ -33,14 +33,14 @@
     <header>
         <div class="container clearfix">
             <div class="logo">
-                <a href="#">thrifty</a>
+                <a href="#/">thrifty</a>
             </div>
-            <a href="#" id="touch-menu">&#9776;</a>
+            <a href="#/" id="touch-menu">&#9776;</a>
             <nav>
                 <ul class="nav clearfix">
-                    <li><a href="#" class="active">Главная</a></li>
-                    <li><a href="#">Вошли как guest</a></li>
-                    <li><a href="#">Выйти</a></li>
+                    <li><a href="#/" class="active">Главная</a></li>
+                    <li><a href="#/">Вошли как guest</a></li>
+                    <li><a href="#/">Выйти</a></li>
                 </ul>
             </nav>
         </div>
@@ -95,7 +95,7 @@
 
                 <div class="row filter">
                     <div class="col-md-6" ng-repeat="filter in filters">
-                        <a href="#" ng-class="{activeFilter: filter===selectedFilter}"
+                        <a href="#/" ng-class="{activeFilter: filter===selectedFilter}"
                                     ng-click="selectFilter(filter)"
                                     ng-bind="filter.name"></a>
                     </div>
@@ -113,7 +113,7 @@
                     <div class="wrap">
                         <div class="clearfix">
                             <div class="right cross">
-                                <a href="#" ng-click="deleteTransaction($index)">&#10005;</a>
+                                <a href="#/" ng-click="deleteTransaction($index)">&#10005;</a>
                             </div>
                         </div>
                         <div class="clearfix transactions">
@@ -131,12 +131,15 @@
                     </div>
                 </div>
 
-                <!--<div class="graphs row" ng-class="{selectedGraph: selectedGraph === 'Все'}"-->
-                     <!--ng-controller="allCtrl">-->
-                    <!--<canvas class="chart chart-doughnut"-->
-                            <!--chart-data="data" chart-labels="labels">-->
-                    <!--</canvas>-->
-                <!--</div>-->
+                <h2 id="graphTitle">{{ graphTitle }}</h2>
+
+                <div class="graphs row" ng-class="{selectedGraph: selectedGraph === 'Все'}"
+                     ng-controller="allCtrl">
+                    <canvas id="line" class="chart chart-line" chart-data="data"
+                            chart-labels="labels" chart-series="series" chart-options="options"
+                            chart-dataset-override="datasetOverride" chart-hover="onHover">
+                    </canvas>
+                </div>
 
                 <div class="graphs row" ng-class="{selectedGraph: selectedGraph === 'Траты'}"
                      ng-controller="spendCtrl">

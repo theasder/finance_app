@@ -1,7 +1,14 @@
 'use strict';
 var app = angular.module('app', ['chart.js']);
 
-app.factory('transactions', function() {
+// app.controller('MenuCtrl', function($scope) {
+//     $scope.custom = true;
+//     $scope.toggleMenu = function () {
+//         $scope.custom = $scope.custom === false ? true: false;
+//     }
+// });
+
+app.factory('transactions', function($filter) {
     function createTransaction(value, time, category, description) {
         var decoration, val, dt = new Date(time);
         if (value > 0) {
@@ -17,7 +24,6 @@ app.factory('transactions', function() {
             time: dt,
             category: category,
             description: description,
-            status: 'added',
             decoration: decoration
         }
     }
@@ -28,7 +34,7 @@ app.factory('transactions', function() {
 
     var data = [
         createTransaction(28400.00, "2016-08-25T08:22:26Z", "Работа", "Зарплата"),
-        createTransaction(-17000.00, "2016-08-23T20:22:26Z", "Квартира", "Аренда"),
+        createTransaction(-17000.00, "2016-08-25T20:22:26Z", "Квартира", "Аренда"),
         createTransaction(12040.00, "2016-08-22T20:22:26Z", "Еще одна работа", "Выполнил заказ на фрилансе"),
         createTransaction(-7000.00, "2016-08-21T20:22:26Z", "Кафе и рестораны", "День Рождения Ларисы Ивановны"),
         createTransaction(-1975.00, "2016-08-20T20:22:26Z", "Еда и напитки", "Букварь Вкуса"),
@@ -38,15 +44,14 @@ app.factory('transactions', function() {
     ].sort(compareOpersByDate);
 
     function addTransaction(value, action, category, description) {
-        console.log(value, category);
-        if (parseFloat(value) <= 0 && value != "" && category != undefined) {
+        if (parseFloat(value) != 0 && value != "" && category != undefined) {
             var time = new Date();
 
             if (action == 'spent') {
                 value = -value;
             }
 
-            if (description == undefined) {
+            if (description === undefined) {
                 description = category;
             }
 
@@ -81,6 +86,44 @@ app.factory('transactions', function() {
         return a + b;
     }
 
+    function dateToDays(date) {
+        return date.split(".").map(function(elem) {return parseInt(elem);});
+    }
+
+    function balanceChange() {
+        var dataGroupByDates = data
+            .filter(timeFilter.method)
+            .reduce(function(res, obj) {
+                var time = $filter('date')(obj.time, 'dd.MM.yyyy');
+                if (!(time in res)) {
+                    res.__array.push(time);
+                    res[time] = parseFloat(obj.value);
+                } else {
+                    res[time] += parseFloat(obj.value);
+                }
+                return res;
+            }, {__array:[]});
+
+        var labels = dataGroupByDates.__array.sort(function(a, b) {
+            var date1 = dateToDays(a), date2 = dateToDays(b);
+            return !(date1[2] <= date2[2] && date1[1] <= date2[1] && (date1[1] == date2[1] ? date1[0] <= date2[0] : true));
+        });
+
+        var values = [], i;
+
+        for (i = 0; i < labels.length; i++) {
+            values.push(dataGroupByDates[labels[i]]);
+        }
+
+        for (i = 1; i < values.length; i++) {
+            values[i] += values[i - 1];
+        }
+        return {
+            labels: labels,
+            values: values
+        };
+    }
+
     function categoriesData(categoryList) {
         var categoryValue, result = [];
 
@@ -111,7 +154,8 @@ app.factory('transactions', function() {
         getFilter: getFilter,
         getTimeFilter: getTimeFilter,
         categoriesData: categoriesData,
-        timeFilter: timeFilter
+        timeFilter: timeFilter,
+        balanceChange: balanceChange
     }
 });
 
@@ -163,7 +207,7 @@ app.constant('spendings', [
     "Спорт",
     "Подарки",
     "Одежда и обувь",
-    "Рестораны и кафе",
+    "Кафе и рестораны",
     "Путешествия",
     "Промтовары",
     "Гаджеты",
@@ -195,8 +239,21 @@ app.controller('main', function ($scope, transactions, spendings, profits, filte
     };
 
     $scope.selectedFilter = $scope.filters[0];
+    $scope.graphTitle = "Изменение вашего баланса";
 
     $scope.selectFilter = function (filter) {
+        switch (filter.name) {
+            case "Все":
+                $scope.graphTitle = "Изменение вашего баланса";
+                break;
+            case "Доходы":
+                $scope.graphTitle = "Диаграмма доходов";
+                break;
+            case "Траты":
+                $scope.graphTitle = "Диаграмма расходов";
+                break;
+        }
+
         transactions.setFilter(filter);
         $scope.selectedFilter = filter;
         $scope.selectedGraph = filter.name;
@@ -260,18 +317,43 @@ app.controller('main', function ($scope, transactions, spendings, profits, filte
 
 });
 
+app.controller("allCtrl", function ($scope, transactions) {
+
+    $scope.$watchCollection('transactionsData', function () {
+        var graph = transactions.balanceChange();
+
+        $scope.labels = graph.labels;
+        $scope.series = ['Ваш баланс в этот день'];
+        $scope.data = [
+            graph.values
+        ];
+        $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
+        $scope.options = {
+            scales: {
+                yAxes: [
+                    {
+                        id: 'y-axis-1',
+                        type: 'linear',
+                        display: true,
+                        position: 'left'
+                    }
+                ]
+            }
+        };
+    });
+});
+
 app.controller('spendCtrl', function($scope, spendings, transactions) {
     $scope.labels = spendings;
-    $scope.data = transactions.categoriesData(spendings);
 
     $scope.$watchCollection('transactionsData', function() {
         $scope.data = transactions.categoriesData(spendings);
     });
+
 });
 
 app.controller('profitCtrl', function($scope, profits, transactions) {
     $scope.labels = profits;
-    $scope.data = transactions.categoriesData(profits);
 
     $scope.$watchCollection('transactionsData', function() {
         $scope.data = transactions.categoriesData(profits);
