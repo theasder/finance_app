@@ -4,19 +4,24 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="styles/styles.css" type="text/css">
+    <link rel="stylesheet" href="styles/styles.min.css" type="text/css">
 	<title>Thrifty – учет ваших личных финансов</title>
     <!-- old browser support -->
-    <script src="js/es5-sham.min.js" type="text/javascript"></script>
-    <script src="js/es5-shim.min.js" type="text/javascript"></script>
-
-    <script src="js/angular.min.js" type="text/javascript"></script>
+    <script src="js/vendors/es5-shim-sham.min.js" type="text/javascript"></script>
+    <script src="js/vendors/angular.min.js" type="text/javascript"></script>
 
     <!-- charts for app -->
     <script src="js/node_modules/chart.js/dist/Chart.min.js"></script>
     <script src="js/node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
 
-    <script src="js/app.js"></script>
+    <!--<script src="js/app.js"></script>-->
+    <!--<script src="js/filters.js"></script>-->
+    <!--<script src="js/controllers/menu.ctrl.js"></script>-->
+    <!--<script src="js/controllers/main.ctrl.js"></script>-->
+    <!--<script src="js/controllers/graphs.ctrl.js"></script>-->
+
+    <!-- all app in one file for perfomance matters-->
+    <script src="js/app-in-one-file/app.js"></script>
 </head>
 <body ng-app="app" ng-controller="main">
     <header ng-controller="MenuCtrl">

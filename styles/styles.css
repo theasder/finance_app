@@ -1,4 +1,4 @@
-@import "http://webfonts.ru/import/opensans.css";
+@import "../fonts/opensans/opensans.css";
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -316,18 +316,18 @@ input[type="text"]:focus, .select-style:focus {
 }
 
 .col-md-9 {
-    width: 25%;
+    width: 30%;
 }
 
 .col-md-10 {
-    width: 50%;
+    width: 40%;
     text-align: center;
     line-height: 33px;
 }
 
 #pagination {
     margin: 30px auto 0 auto;
-    width: 300px;
+    width: 280px;
 }
 
 @media (min-width: 992px) {
