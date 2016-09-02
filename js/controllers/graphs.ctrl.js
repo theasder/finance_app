@@ -1,11 +1,10 @@
 /**
  * graphs.ctrl.js
  */
-(function () {
-    'use strict';
 
-    var app = angular.module('app');
-    app.controller("allCtrl", function ($scope, transactions) {
+'use strict';
+angular.module('app')
+    .controller("allCtrl", function ($scope, transactions) {
 
         $scope.$watchCollection('transactionsData', function () {
             var graph = transactions.balanceChange();
@@ -29,23 +28,19 @@
                 }
             };
         });
-    });
-
-    app.controller('spendCtrl', function($scope, spendings, transactions) {
+    })
+    .controller('spendCtrl', function($scope, spendings, transactions) {
         $scope.labels = spendings;
 
         $scope.$watchCollection('transactionsData', function() {
             $scope.data = transactions.categoriesData(spendings);
         });
 
-    });
-
-    app.controller('profitCtrl', function($scope, profits, transactions) {
+    })
+    .controller('profitCtrl', function($scope, profits, transactions) {
         $scope.labels = profits;
 
         $scope.$watchCollection('transactionsData', function() {
             $scope.data = transactions.categoriesData(profits);
         });
     });
-
-}());

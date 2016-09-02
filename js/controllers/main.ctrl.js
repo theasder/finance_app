@@ -1,11 +1,9 @@
 /**
  * main.ctrl.js
  */
-(function () {
-    'use strict';
-
-    var app = angular.module('app');
-    app.controller('main', function ($scope, transactions, spendings, profits, filters, timeFilters) {
+'use strict';
+angular.module('app')
+    .controller('main', function ($scope, transactions, spendings, profits, filters, timeFilters) {
 
         $scope.filters = filters;
         $scope.timeFilters = timeFilters;
@@ -126,4 +124,3 @@
         };
 
     });
-}());

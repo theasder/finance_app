@@ -1,15 +1,14 @@
 /**
  * menu.ctrl.js
  */
-(function () {
-    'use strict';
+'use strict';
 
-    var app = angular.module('app');
-    app.controller('MenuCtrl', function($scope) {
+angular.module('app')
+    .controller('MenuCtrl', function($scope) {
         $scope.custom = false;
         $scope.toggleMenu = function () {
             $scope.custom = !$scope.custom;
         };
     });
-}());
+
 
